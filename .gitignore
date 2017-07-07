@@ -1,0 +1,14 @@
+*.DS_Store
+
+# IDEA #
+.idea
+*.iml
+
+.project
+.settings/
+.classpath
+bin/
+target/
+catalina.base_IS_UNDEFINED/
+src/main/webapp/WEB-INF/velocity/version.vm
+config/optimus/beans/buildmap.xml
