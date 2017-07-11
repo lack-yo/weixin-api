@@ -1,6 +1,6 @@
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import service.CacheService;
+import com.lou.weixin.service.cache.CacheService;
 
 /**
  * @author loufeng

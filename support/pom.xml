@@ -11,6 +11,14 @@
     <artifactId>support</artifactId>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.7.0</version>
+        </dependency>
+    </dependencies>
+
 
 
 </project>

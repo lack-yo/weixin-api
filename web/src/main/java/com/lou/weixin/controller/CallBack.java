@@ -1,4 +1,4 @@
-package controller;
+package com.lou.weixin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +18,9 @@ public class CallBack {
     @RequestMapping(value = "/callback")
     @ResponseBody
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        //消息匹配和消息处理
+        //match
+        //handle
         return "success";
     }
 

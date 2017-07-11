@@ -12,10 +12,9 @@
     <context:component-scan base-package="redis.clients.jedis"/>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxActive"  value="50" />
-        <property name="maxIdle" value="10" />
-        <property name="maxWait" value="1000" />
-        <property name="testOnBorrow"  value="true"/>
+        <property name="maxActive"  value="${redis.maxActive}" />
+        <property name="maxIdle" value="${redis.maxIdle}" />
+        <property name="maxWait" value="${redis.maxWait}" />
     </bean>
 
     <bean id="jedisShardInfo" class="redis.clients.jedis.JedisShardInfo">
