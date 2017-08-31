@@ -1,4 +1,4 @@
-package com.lou.weixin.model;
+package com.lou.weixin.model.result;
 
 /**
  * @author loufeng
