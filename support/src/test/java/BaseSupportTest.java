@@ -1,6 +1,3 @@
-import com.lou.weixin.constants.WxUrl;
-import com.lou.weixin.model.result.WxToken;
-import com.lou.weixin.util.HttpUtil;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -13,10 +10,5 @@ public class BaseSupportTest {
 
     @Test
     public void testToken() throws IOException {
-        String appid = "wx1a31061c4aea3b52";
-        String secret = "";
-        String url = WxUrl.ACCESS_TOKEN_URL.replace("APPID", appid).replace("APPSECRET",secret);
-        WxToken token = HttpUtil.get(url,WxToken.class);
-        System.out.println(token);
     }
 }
