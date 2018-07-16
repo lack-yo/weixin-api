@@ -213,7 +213,7 @@ public class MinaCodeSupport {
     }
 
     /**
-     * 获取体验小程序的体验二维码,下载文件io，转外链souche
+     * 获取体验小程序的体验二维码,下载文件io
      *
      * @param token 小程序token
      * @return 访问地址
