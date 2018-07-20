@@ -197,7 +197,7 @@ public class MpMediaSupport {
         String url = MATERIAL_ADD_NEWS.replace("ACCESS_TOKEN", token);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("articles", articles);
-        String mc = WxHttpUtil.post(url, jsonObject.toJSONString());
+        String mc = WxHttpUtil.post(url, jsonObject);
         if (StringUtils.isNotBlank(mc)) {
             JSONObject object = JSON.parseObject(mc);
             return object.getString("media_id");

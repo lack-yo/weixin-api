@@ -27,10 +27,11 @@ public class CacheService {
     }
 
     public boolean setString(String key, String value) {
-
-        jedis.set(key, value);
-        return true;
+        return jedis.set(key, value) != null;
     }
 
+    public boolean setString(String key, String value, int expires) {
+        return jedis.setex(key, expires, value) != null;
+    }
 
 }

@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
  * @author loufeng
  * @date 2018/7/9 下午3:03.
  */
+@SuppressWarnings("unused")
 public class EmojiUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmojiUtil.class);
     /**
@@ -117,12 +118,11 @@ public class EmojiUtil {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
         String emojiStr = "😂";
-        System.out.println("emoji字符串-" + emojiStr + ",length：" + emojiStr.length());
+        System.out.println(emojiStr + ",length：" + emojiStr.length());
         System.out.println("----------------------------------");
         String unicodeStr = parse2UnicodeStr(emojiStr);
         System.out.println("转换成unicode字符串直接存储：" + unicodeStr + ",length：" + unicodeStr.length());
         System.out.println("unicode字符串转化为emoji：" + StringEscapeUtils.unescapeJava(unicodeStr));
-        System.out.println("----------------------------------");
         String encodeStr = encodeStr(emojiStr);
         String decodeStr = decodeStr(encodeStr);
         System.out.println("----------------------------------");

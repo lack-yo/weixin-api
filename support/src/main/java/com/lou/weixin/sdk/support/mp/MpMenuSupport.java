@@ -40,7 +40,7 @@ public class MpMenuSupport {
      */
     public static void menuCreate(String token, WxMenu menu) throws WxErrorException {
         String url = MENU_CREATE_URL.replace("ACCESS_TOKEN", token);
-        WxHttpUtil.post(url, menu.toJson());
+        WxHttpUtil.post(url, menu);
     }
 
 

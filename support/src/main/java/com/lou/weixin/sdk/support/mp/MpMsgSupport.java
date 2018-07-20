@@ -81,7 +81,7 @@ public class MpMsgSupport {
             WxMassOpenIdsMessage message
     ) throws WxErrorException {
         String url = MESSAGE_MASS_SEND_URL.replace("ACCESS_TOKEN", token);
-        String result = WxHttpUtil.post(url, message.toJson());
+        String result = WxHttpUtil.post(url, message);
         return WxGsonBuilder.create().fromJson(result, WxMessageSendResult.class);
     }
 
@@ -97,7 +97,7 @@ public class MpMsgSupport {
             String token, WxMassGroupMessage message)
             throws WxErrorException {
         String url = MESSAGE_MASS_SENDALL_URL.replace("ACCESS_TOKEN", token);
-        String result = WxHttpUtil.post(url, message.toJson());
+        String result = WxHttpUtil.post(url, message);
         return WxGsonBuilder.create().fromJson(result, WxMessageSendResult.class);
 
     }
@@ -144,7 +144,7 @@ public class MpMsgSupport {
      */
     public static String tempalteMessageSend(String token, WxTemplateMessage message) throws WxErrorException {
         String url = TEMPLATE_MESSAGE_SEND_URL.replace("ACCESS_TOKEN", token);
-        return WxHttpUtil.post(url, message.toJson());
+        return WxHttpUtil.post(url, message);
     }
 
     /**
@@ -158,7 +158,7 @@ public class MpMsgSupport {
      */
     public static String customMessageSend(String appId, String token, WxCustomMessage message) throws WxErrorException {
         String url = MESSAGE_CUSTOM_SEND_URL.replace("ACCESS_TOKEN", token);
-        return WxHttpUtil.post(url, message.toJson());
+        return WxHttpUtil.post(url, message);
     }
 
     /**

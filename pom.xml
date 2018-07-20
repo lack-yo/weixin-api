@@ -11,7 +11,6 @@
     <modules>
         <module>support</module>
         <module>web</module>
-        <module>api</module>
     </modules>
 
     <properties>

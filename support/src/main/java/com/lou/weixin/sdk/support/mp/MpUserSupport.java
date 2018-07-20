@@ -157,7 +157,7 @@ public class MpUserSupport {
      */
     public static void groupUpdate(String token, WxGroup group) throws WxErrorException {
         String url = GROUPS_UPDATE_URL.replace("ACCESS_TOKEN", token);
-        WxHttpUtil.post(url, group.toJson());
+        WxHttpUtil.post(url, group);
     }
 
     /**

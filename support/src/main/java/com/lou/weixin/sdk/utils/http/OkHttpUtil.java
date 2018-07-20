@@ -12,9 +12,12 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * okhttp简单封装
+ *
  * @author loufeng
  * @date 2018/7/9 下午3:16.
  */
+@SuppressWarnings("unused")
 public class OkHttpUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(OkHttpUtil.class);
 
@@ -131,30 +134,6 @@ public class OkHttpUtil {
         return response.body().string();
 
     }
-
-
-    /**
-     * 获取完整链接
-     *
-     * @param url    url
-     * @param params 请求参数
-     * @return result
-     */
-    private static String getCompleteUrl(String url, Map<String, Object> params) {
-        if (params == null || params.isEmpty()) {
-            return url;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (String key : params.keySet()) {
-            if (params.get(key) != null) {
-                sb.append(key).append("=").append(params.get(key)).append("&");
-            }
-        }
-        String paramUrl = sb.toString();
-        return url + "?" + paramUrl;
-    }
-
 
     public static InputStream postDownload(String url, String json) {
         LOGGER.info("start to post url {}, params: {}", url, json);

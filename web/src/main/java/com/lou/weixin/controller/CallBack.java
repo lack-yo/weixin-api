@@ -17,9 +17,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * 作为微信开发消息处理
+ *
  * @author loufeng
  * @date 2017/7/7 上午10:18.
- * 作为微信开发消息处理
  */
 @Controller
 public class CallBack {
@@ -79,7 +80,6 @@ public class CallBack {
             return;
         }
 
-//        openPlatformHandler(appId, request, response);
         LOGGER.info("callback检测结束！！！");
     }
 

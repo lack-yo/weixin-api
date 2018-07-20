@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * 微信http请求封装
+ *
  * @author loufeng
  * @date 2017/8/29 上午11:02.
  */
@@ -41,18 +43,6 @@ public class WxHttpUtil {
      */
     public static String post(String url, Object bean) throws WxErrorException {
         String json = GSON.toJson(bean);
-        return post(url, json);
-    }
-
-    /**
-     * post请求
-     *
-     * @param url  请求url
-     * @param json 请求参数
-     * @return result
-     * @throws WxErrorException 微信error
-     */
-    public static String post(String url, String json) throws WxErrorException {
         String result = OkHttpUtil.postForm(url, json);
         WxError error = WxError.fromJson(result);
         if (error.getErrcode() != null && error.getErrcode() != 0) {
@@ -62,7 +52,7 @@ public class WxHttpUtil {
     }
 
     /**
-     * 请求下载文件，转oss域名文件
+     * 请求下载文件
      *
      * @return oss下载地址
      */
@@ -91,6 +81,13 @@ public class WxHttpUtil {
         }
     }
 
+    /**
+     * post方式下载文件
+     *
+     * @param url  请求地址
+     * @param json 数据
+     * @return 文件
+     */
     public static InputStream postDownload(String url, Object json) {
         String bean = GSON.toJson(json);
         return OkHttpUtil.postDownload(url, bean);
