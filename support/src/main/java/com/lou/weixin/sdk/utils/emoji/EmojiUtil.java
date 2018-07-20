@@ -11,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * emoji表情处理工具类
+ *
  * @author loufeng
  * @date 2018/7/9 下午3:03.
  */

@@ -6,6 +6,26 @@
  * 针对org.apache.commons.codec.binary.Base64，
  * 需要导入架包commons-codec-1.9（或commons-codec-1.8等其他版本）
  * 官方下载地址：http://commons.apache.org/proper/commons-codec/download_codec.cgi
+ * <p>
+ * 针对org.apache.commons.codec.binary.Base64，
+ * 需要导入架包commons-codec-1.9（或commons-codec-1.8等其他版本）
+ * 官方下载地址：http://commons.apache.org/proper/commons-codec/download_codec.cgi
+ * <p>
+ * 针对org.apache.commons.codec.binary.Base64，
+ * 需要导入架包commons-codec-1.9（或commons-codec-1.8等其他版本）
+ * 官方下载地址：http://commons.apache.org/proper/commons-codec/download_codec.cgi
+ * <p>
+ * 针对org.apache.commons.codec.binary.Base64，
+ * 需要导入架包commons-codec-1.9（或commons-codec-1.8等其他版本）
+ * 官方下载地址：http://commons.apache.org/proper/commons-codec/download_codec.cgi
+ * <p>
+ * 针对org.apache.commons.codec.binary.Base64，
+ * 需要导入架包commons-codec-1.9（或commons-codec-1.8等其他版本）
+ * 官方下载地址：http://commons.apache.org/proper/commons-codec/download_codec.cgi
+ * <p>
+ * 针对org.apache.commons.codec.binary.Base64，
+ * 需要导入架包commons-codec-1.9（或commons-codec-1.8等其他版本）
+ * 官方下载地址：http://commons.apache.org/proper/commons-codec/download_codec.cgi
  */
 
 // ------------------------------------------------------------------------
@@ -24,6 +44,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -42,11 +63,11 @@ import java.util.Random;
  * </ol>
  */
 public class WXBizMsgCrypt {
-    static Charset CHARSET = Charset.forName("utf-8");
-    Base64 base64 = new Base64();
-    byte[] aesKey;
-    String token;
-    String appId;
+    private static Charset CHARSET = Charset.forName("utf-8");
+    private Base64 base64 = new Base64();
+    private byte[] aesKey;
+    private String token;
+    private String appId;
 
     /**
      * 构造函数
@@ -66,8 +87,7 @@ public class WXBizMsgCrypt {
         aesKey = Base64.decodeBase64(encodingAesKey + "=");
     }
 
-    // 生成4个字节的网络字节序
-    byte[] getNetworkBytesOrder(int sourceNumber) {
+    private byte[] getNetworkBytesOrder(int sourceNumber) {
         byte[] orderBytes = new byte[4];
         orderBytes[3] = (byte) (sourceNumber & 0xFF);
         orderBytes[2] = (byte) (sourceNumber >> 8 & 0xFF);
@@ -76,8 +96,8 @@ public class WXBizMsgCrypt {
         return orderBytes;
     }
 
-    // 还原4个字节的网络字节序
-    int recoverNetworkBytesOrder(byte[] orderBytes) {
+
+    private int recoverNetworkBytesOrder(byte[] orderBytes) {
         int sourceNumber = 0;
         for (int i = 0; i < 4; i++) {
             sourceNumber <<= 8;
@@ -86,11 +106,10 @@ public class WXBizMsgCrypt {
         return sourceNumber;
     }
 
-    // 随机生成16位字符串
-    String getRandomStr() {
+    private String getRandomStr() {
         String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 16; i++) {
             int number = random.nextInt(base.length());
             sb.append(base.charAt(number));
@@ -136,9 +155,7 @@ public class WXBizMsgCrypt {
             byte[] encrypted = cipher.doFinal(unencrypted);
 
             // 使用BASE64对加密后的字符串进行编码
-            String base64Encrypted = base64.encodeToString(encrypted);
-
-            return base64Encrypted;
+            return base64.encodeToString(encrypted);
         } catch (Exception e) {
             throw new AesException(AesException.ENCRYPT_AES_ERROR);
         }
@@ -151,14 +168,14 @@ public class WXBizMsgCrypt {
      * @return 解密得到的明文
      * @throws AesException aes解密失败
      */
-    String decrypt(String text) throws AesException {
+    private String decrypt(String text) throws AesException {
         byte[] original;
         try {
             // 设置解密模式为AES的CBC模式
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-            SecretKeySpec key_spec = new SecretKeySpec(aesKey, "AES");
+            SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
             IvParameterSpec iv = new IvParameterSpec(Arrays.copyOfRange(aesKey, 0, 16));
-            cipher.init(Cipher.DECRYPT_MODE, key_spec, iv);
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, iv);
 
             // 使用BASE64对密文进行解码
             byte[] encrypted = Base64.decodeBase64(text);
@@ -169,7 +186,7 @@ public class WXBizMsgCrypt {
             throw new AesException(AesException.DECRYPT_AES_ERROR);
         }
 
-        String xmlContent, from_appid;
+        String xmlContent, fromAppid;
         try {
             // 去除补位字符
             byte[] bytes = PKCS7Encoder.decode(original);
@@ -180,14 +197,14 @@ public class WXBizMsgCrypt {
             int xmlLength = recoverNetworkBytesOrder(networkOrder);
 
             xmlContent = new String(Arrays.copyOfRange(bytes, 20, 20 + xmlLength), CHARSET);
-            from_appid = new String(Arrays.copyOfRange(bytes, 20 + xmlLength, bytes.length),
+            fromAppid = new String(Arrays.copyOfRange(bytes, 20 + xmlLength, bytes.length),
                     CHARSET);
         } catch (Exception e) {
             throw new AesException(AesException.ILLEGAL_BUFFER);
         }
 
         // appid不相同的情况
-        if (!from_appid.equals(appId)) {
+        if (!fromAppid.equals(appId)) {
             throw new AesException(AesException.VALIDATE_APPID_ERROR);
         }
         return xmlContent;
@@ -214,15 +231,14 @@ public class WXBizMsgCrypt {
         String encrypt = encrypt(getRandomStr(), replyMsg);
 
         // 生成安全签名
-        if (timeStamp == "") {
+        if (Objects.equals(timeStamp, "")) {
             timeStamp = Long.toString(System.currentTimeMillis());
         }
 
         String signature = SHA1.getSHA1(token, timeStamp, nonce, encrypt);
 
         // 生成发送的xml
-        String result = XMLParse.generate(encrypt, signature, timeStamp, nonce);
-        return result;
+        return XMLParse.generate(encrypt, signature, timeStamp, nonce);
     }
 
     /**
@@ -257,8 +273,7 @@ public class WXBizMsgCrypt {
         }
 
         // 解密
-        String result = decrypt(encrypt[1].toString());
-        return result;
+        return decrypt(encrypt[1].toString());
     }
 
     public String decryptMsg1(String msgSignature, String timeStamp, String nonce, String postData)
@@ -277,8 +292,7 @@ public class WXBizMsgCrypt {
         }
 
         // 解密
-        String result = decrypt(encrypt[1].toString());
-        return result;
+        return decrypt(encrypt[1].toString());
     }
 
     /**
@@ -299,8 +313,7 @@ public class WXBizMsgCrypt {
             throw new AesException(AesException.VALIDATE_SIGNATURE_ERROR);
         }
 
-        String result = decrypt(echoStr);
-        return result;
+        return decrypt(echoStr);
     }
 
 }
