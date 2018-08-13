@@ -35,12 +35,9 @@ public class OkHttpUtil {
      * @return 结果
      */
     public static String get(String url) throws WxErrorException {
-        LOGGER.info("start to request get {}", url);
-        long startTime = System.currentTimeMillis();
         Request request = new Request.Builder().url(url).build();
         try {
-            Response response = CLIENT.newCall(request).execute();
-            LOGGER.info("finish request get:{},cost:{}ms", url, (System.currentTimeMillis() - startTime));
+            Response response = execute(request);
             return response.body().string();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -67,8 +64,6 @@ public class OkHttpUtil {
      * @return result
      */
     public static String postForm(String url, String json, Map<String, Object> headers) {
-        LOGGER.info("start to post url {}, params: {}", url, json);
-        long startTime = System.currentTimeMillis();
         RequestBody body = RequestBody.create(JSON, json);
         Request.Builder requestBuilder = new Request.Builder()
                 .url(url)
@@ -81,16 +76,10 @@ public class OkHttpUtil {
         }
 
         Request request = requestBuilder.build();
-        Response response;
-        try {
-            response = CLIENT.newCall(request).execute();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         String result;
         try {
+            Response response = execute(request);
             result = response.body().string();
-            LOGGER.info("finish request post:{},cost:{}ms", url, (System.currentTimeMillis() - startTime));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -104,16 +93,14 @@ public class OkHttpUtil {
      * @return result
      */
     public static InputStream getDownload(String url) {
-        LOGGER.info("start to get url {}, params: {}", url);
         Request request = new Request.Builder()
                 .url(url).build();
-        Response response;
         try {
-            response = CLIENT.newCall(request).execute();
+            Response response = execute(request);
+            return response.body().byteStream();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return response.body().byteStream();
     }
 
     /**
@@ -135,19 +122,62 @@ public class OkHttpUtil {
 
     }
 
+
+    /**
+     * 获取完整链接
+     *
+     * @param url    url
+     * @param params 请求参数
+     * @return result
+     */
+    private static String getCompleteUrl(String url, Map<String, Object> params) {
+        if (params == null || params.isEmpty()) {
+            return url;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String key : params.keySet()) {
+            if (params.get(key) != null) {
+                sb.append(key).append("=").append(params.get(key)).append("&");
+            }
+        }
+        String paramUrl = sb.toString();
+        return url + "?" + paramUrl;
+    }
+
+    /**
+     * post下载
+     *
+     * @param url  请求地址
+     * @param json 请求参数
+     * @return 文件
+     */
     public static InputStream postDownload(String url, String json) {
-        LOGGER.info("start to post url {}, params: {}", url, json);
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
                 .build();
-        Response response;
         try {
-            response = CLIENT.newCall(request).execute();
+            Response response = execute(request);
+            return response.body().byteStream();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return response.body().byteStream();
+    }
+
+    /**
+     * 执行请求，并打印必要信息
+     *
+     * @param request 请求
+     * @return response
+     * @throws IOException 异常
+     */
+    private static Response execute(Request request) throws IOException {
+        long startTime = System.currentTimeMillis();
+        LOGGER.info("start to execute {}", request.toString());
+        Response response = CLIENT.newCall(request).execute();
+        LOGGER.info("finish {}, cost:{}ms", request.toString(), (System.currentTimeMillis() - startTime));
+        return response;
     }
 }
